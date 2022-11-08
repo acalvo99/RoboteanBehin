@@ -1,0 +1,160 @@
+<!-- Created By CodingNepal - www.codingnepalweb.com  -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" name="viewport" content="width=1280, user-scalable=no" />>
+
+    <script type="text/javascript" src="vendor/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="vendor/js.cookie-2.2.1.min.js"></script>
+    <script type="text/javascript"src="/libs/qi/2/qi.js"></script>
+    <!-- <script type="text/javascript"src="js/script.js"></script> -->
+        
+    <script type="text/javascript" src="js/stopWatch.js"></script>
+    
+    <script type="text/javascript" src="db/games/preguntas/general_knowledge.js"></script>
+    <script type="text/javascript" src="db/games/preguntas/science_and_nature.js"></script>
+    <script type="text/javascript" src="db/games/preguntas/sports.js"></script>
+    <script type="text/javascript" src="js/preguntas.js"></script>
+
+    <link rel="stylesheet" href="css/master.css"/>
+    <link rel="stylesheet" href="css/juegos-master.css"/>
+    <link rel="stylesheet" href="css/preguntas.css"/>
+    
+</head>
+<body>
+    <div class="contenedorGeneral">
+        <div class="barraSuperior">
+            <img src="icons/menu/button-logo.png" class="button-logo" id="button-logo" />
+            <img src="icons/menu/button-home.png" class="button-home" onclick="procesarVoz('inicio')" id="button-home"/>
+            <img src="icons/menu/button-back.png" class="button-back" onclick="procesarVoz('volver')" id="button-back"/>
+            <img src="icons/menu/button-train.png" class="button-train" onclick="procesarVoz('entrenar')" id="button-train"/>
+        </div>
+        <div class="barraMenu">
+            <span class="titulo" id="titulo">¡Mejora tu conocimiento contestando divertidas preguntas!</span>
+            <img src="imagenes/juegos-general/reloj-blue.png" class="reloj" id="reloj" />
+            <!-- Tiempo y cronometro -->
+            <span class="textoTiempo">Tiempo total</span>
+            <span class="cronometro" id="timer">00:00</span>
+            
+            <div class="cuadrados"></div>
+            <img src="imagenes/juegos-general/emotion-neutral.png" class="estadoEmocional" id="estado-emocional" />
+            <!-- <div class="estadoEmocional"></div> -->
+        </div>
+        <div class="zonaCentral">
+            <div class="fondo"></div>
+            <div class="capaCubrir"></div>
+            <!-- start Quiz button -->
+            <div class="start_btn">
+                <video autoplay loop>
+                    <source src="imagenes/preguntas/preguntas.mp4" type="video/mp4">
+                </video>
+                <div class="buttons">
+                    <button class="quit" onclick="onClickStartButton()">Comenzar Juego</button>
+                </div>    
+            </div>
+
+            <!-- Info Box -->
+            <div class="info_box">
+                <div class="info-title"><span>Reglas del juego</span></div>
+                <div class="info-list">
+                    <div class="info">1. Tendrás solo <span>30 segundos</span> para cada pregunta.</div>
+                    <div class="info">2. Una vez que selecciones tu respuesta, no se puede deshacer.</div>
+                    <div class="info">3. No puedes seleccionar ninguna opción una vez que pasa el tiempo.</div>
+                    <div class="info">4. No puedes salir de la prueba mientras juegas.</div>
+                    <div class="info">5. Obtendrás puntos en base a tus respuestas correctas y el tiempo que tardes en contestarlas.</div>
+                </div>
+                <div class="buttons">
+                    <button class="quit" onclick="onClickExitButton()">Cancelar</button>
+                    <button class="ok" onclick="onClickContinueButton()">Continuar</button>
+                </div>
+            </div>
+
+            <!-- Quiz Box -->
+            <div class="quiz_box">
+                <header>
+                    <div class="title">Preguntas sobre Cultura</div>
+                    <div class="countdown">
+                        <div class="time_left_txt">Tiempo</div>
+                        <div class="timer_sec">30</div>
+                    </div>
+                    <div class="time_line"></div>
+                </header>
+                <section>
+                    <div class="que_text">
+                        <!-- Here I've inserted question from JavaScript -->
+                    </div>
+                    <div class="option_list">
+                        <!-- Here I've inserted options from JavaScript -->
+                    </div>
+                </section>
+
+                <!-- footer of Quiz Box -->
+                <footer>
+                    <div class="total_que">
+                        <!-- Here I've inserted Question Count Number from JavaScript -->
+                    </div>
+                    <button class="next_btn" onclick="onClickNextButton()">Siguiente</button>
+                </footer>
+            </div>
+
+            <!-- Result Box -->
+            <div class="result_box">
+                <div class="score_main">
+                    <img class="crown" src="imagenes/preguntas/crown-blue.png"/>
+                    <div class="score">
+                        <span class="score_title">Puntuación: </span>
+                        <span class="score_value">50</span>
+                    </div>
+                </div>
+                <div class="complete_text">¡Has completado el juego de preguntas de hoy!</div>
+                <div class="score_text">
+                    <!-- Here I've inserted Score Result from JavaScript -->
+                </div>
+                <div class="buttons">
+                    <!-- <button class="restart" onclick="onClickRestartButton()">Replay Quiz</button> -->
+                    <button class="ok" id="ranking_button" onclick="onClickRankingButton()">Ver Progreso</button>
+                    <button class="quit" onclick="onClickContinueButton()">Volver a jugar</button>
+                    <button class="quit" onclick="onClickQuitButton()">Terminar</button>
+                </div>
+            </div>
+            <!-- Ranking Box -->
+            <div class="ranking_box">
+                <div class="info-title"><span>Progreso del juego</span></div>
+                <!-- <div class="average"> -->
+                    <!-- Here I've inserted Average Number from JavaScript -->
+                <!-- </div> 
+                <div class="final_score"> -->
+                    <!-- Here I've inserted Score Number from JavaScript -->
+                <!-- </div> -->
+                <table class="content-table">
+                    <thead>
+                      <tr>
+                        <th>Fecha</th>
+                        <th>Aciertos</th>
+                        <th>Tiempo</th>
+                        <th>Puntuación</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>2021-04-26 12:55:43</td>
+                        <td>5</td>
+                        <td>00:85</td>
+                        <td>70</td>
+                      </tr>
+                      <tr class="active-row">
+                        <td>2021-04-26 12:55:43</td>
+                        <td>5</td>
+                        <td>00:85</td>
+                        <td>70</td>
+                      </tr>
+                    </tbody>
+                </table>
+                <div class="buttons">
+                    <button class="ok" onclick="onClickAcceptButton()">Continuar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
