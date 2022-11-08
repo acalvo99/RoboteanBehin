@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<package version="1.0.3" uuid="roboteanbehin-17264a">
+ <names>
+  <name lang="en_US">RoboteanBehin</name>
+  <name lang="es_ES">UrolaKosta</name>
+ </names>
+ <descriptions>
+  <description lang="en_US">Urola kosta application</description>
+  <description lang="es_ES">Aplicacion de urola kosta</description>
+ </descriptions>
+ <supportedLanguages>
+  <language>en_US</language>
+  <language>es_ES</language>
+ </supportedLanguages>
+ <descriptionLanguages>
+  <language>en_US</language>
+  <language>es_ES</language>
+ </descriptionLanguages>
+ <contents>
+  <behaviorContent path="behavior_1">
+   <userRequestable/>
+   <nature>interactive</nature>
+   <descriptions>
+    <description lang="en_US">Main Menu</description>
+   </descriptions>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Speaking/BodyTalk_1">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Speaking/BodyTalk_10">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Speaking/BodyTalk_11">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Speaking/BodyTalk_12">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Speaking/BodyTalk_13">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Speaking/BodyTalk_14">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Speaking/BodyTalk_15">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Speaking/BodyTalk_16">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Speaking/BodyTalk_2">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Speaking/BodyTalk_3">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Speaking/BodyTalk_4">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Speaking/BodyTalk_5">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Speaking/BodyTalk_6">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Speaking/BodyTalk_7">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Speaking/BodyTalk_8">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Speaking/BodyTalk_9">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <dialogContent typeVersion="1.0" topicName="ExampleDialog">
+   <topic language="es_ES" path="behavior_1/ExampleDialog/ExampleDialog_spe.top"/>
+  </dialogContent>
+ </contents>
+ <requirements>
+  <naoqiRequirement maxVersion="2.5" minVersion="2.5"/>
+  <robotRequirement model="JULIETTE"/>
+ </requirements>
+</package>
