@@ -1,0 +1,265 @@
+/* Barra menu tiempo */
+.barraMenu {
+    position: absolute;
+    top: 80px;
+    left: 0px;
+    width: 1280px;
+    height: 100px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 2px 5px #0000001A;
+    opacity: 1;
+    z-index: 5;
+}
+.titulo {
+    /* background: red; */
+    position: absolute;
+    display: inline-grid;
+    /* align-items: center; */
+    text-align: center;
+    width:560px;
+    height:70px;
+    padding-top: 30px;
+    padding-left: 0px;
+    padding-right: 0px;
+    font: Bold 26px/40px Tw Cen MT;
+    color: black;
+}
+.reloj {
+    position: absolute;
+    top: 27px;
+    left: 580px;
+    width: 50px;
+    height: 50px;
+    z-index: 5;
+}
+.trofeo {
+    position: absolute;
+    top: 10px;
+    left: 605px;
+    width: 80px;
+    height: 80px;
+    z-index: 5;
+}
+.textoTiempo {
+    position: absolute;
+    top: 27px;
+    left: 650px;
+    width: 40px;
+    height: 20px;
+    color: #31428F;
+    font: normal 20px Tw Cen MT;
+    background: transparent;
+    z-index: 5;
+}
+.cronometro {
+    position: absolute;
+    top: 50px;
+    left: 650px;
+    width: 40px;
+    height: 25px;
+    color: #31428F;
+    font: Bold 24px Tw Cen MT;
+    background: transparent;
+    z-index: 5;
+}
+
+.cuadrados {
+    position: absolute;
+    background-image: url("../imagenes/juegos-general/cuadrados-grey.png");
+    top: 0px;
+    left: 750px;
+    width: 530px;
+    height: 100px;
+    opacity: 0.5;
+    z-index: 2;
+    /* background: #2F4491; */
+}
+
+.cuadradosResultados {
+    position: absolute;
+    background-image: url("../imagenes/juegos-general/cuadrados-color.png");
+    top: 0px;
+    left: 813px;
+    width: 475px;
+    height: 100px;
+    opacity: 1.0;
+    z-index: 2;
+    /* background: #2F4491; */
+}
+
+.estadoEmocional {
+    position: absolute;
+    /* background-image: url("../imagenes/juegos-general/emotion-neutral.png"); */
+    top: 5px;
+    left: 1130px;
+    width: 104px;
+    height: 90px;
+    opacity: 1.0;
+    z-index: 2;
+    /* background: red; */
+}
+
+/* Anillos */
+.puntosLogica {
+    position: absolute;
+    top: 41px;
+    left: 820px;
+    width: 46px;
+    height: 27px;
+    text-align: center;
+    /* font: Bold 14px/19px Segoe UI; */
+    font: Bold 14px/19px Tw Cen MT;
+    letter-spacing: 0;
+    color: #2F4491;
+    opacity: 0.8;
+    z-index: 9;
+}
+.textoLogica {
+    position: absolute;
+    top: 44px;
+    left: 877.5px;
+    width: 36px;
+    height: 15px;
+    font: 14px/19px Tw Cen MT;
+    letter-spacing: 0;
+    color: #2F4491;
+    z-index: 8;
+}
+.puntosMemoria {
+    position: absolute;
+    top: 41px;
+    left: 930px;
+    width: 60px;
+    height: 27px;
+    text-align: center;
+    font: Bold 14px/19px Tw Cen MT;
+    letter-spacing: 0;
+    color: #2F4491;
+    opacity: 0.8;
+    z-index: 9;
+}
+.textoMemoria {
+    position: absolute;
+    top: 44px;
+    left: 998.5px;
+    width: 50px;
+    height: 15px;
+    font: 14px/19px Tw Cen MT;
+    letter-spacing: 0;
+    color: #2F4491;
+    z-index: 8;
+}
+
+.puntosMatematicas {
+    position: absolute;
+    top: 41px;
+    left: 1075px;
+    width: 52px;
+    height: 28px;
+    text-align: center;
+    font: Bold 14px/19px Tw Cen MT;
+    letter-spacing: 0;
+    color: #2F4491;
+    opacity: 0.8;
+    z-index: 9;
+}
+.textoMatematicas {
+    position: absolute;
+    top: 44px;
+    left: 1135px;
+    width: 72px;
+    height: 15px;
+    font: 14px/19px Tw Cen MT;
+    letter-spacing: 0;
+    color: #2F4491;
+    z-index: 8;
+}
+/* Circulos de progreso */
+.circuloLogica {
+    position: absolute;
+    top: 22px;
+    left: 812px;
+    width: 50px;
+    height: 50px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border: 4px solid #CFD1D6;
+    border-radius: 100%;
+    z-index: 7;
+}
+.circuloLogicaCompleto {
+    position: absolute;
+    top: 22px;
+    left: 812px;
+    width: 50px;
+    height: 50px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border: 4px solid #2F4491;
+    border-radius: 100%;
+    z-index: 7;
+}
+.circuloMemoria {
+    position: absolute;
+    top: 22px;
+    left: 930px;
+    width: 50px;
+    height: 50px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border: 4px solid #CFD1D6;
+    border-radius: 100%;
+    z-index: 7;
+}
+.circuloMemoriaCompleto {
+    position: absolute;
+    top: 22px;
+    left: 930px;
+    width: 50px;
+    height: 50px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border: 4px solid #2F4491;
+    border-radius: 100%;
+    z-index: 7;
+}
+.circuloMatematicas {
+    position: absolute;
+    top: 22px;
+    left: 1071px;
+    width: 50px;
+    height: 50px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border: 4px solid #CFD1D6;
+    border-radius: 100%;
+    z-index: 7;
+}
+.circuloMatematicasCompleto {
+    position: absolute;
+    top: 22px;
+    left: 1071px;
+    width: 50px;
+    height: 50px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border: 4px solid #2F4491;
+    border-radius: 100%;
+    z-index: 7;
+}
+
+/* Zona central */
+.zonaCentral {
+    position: absolute;
+    top: 180px;
+    left: 0px;
+    width: 1280px;
+    height: 620px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    opacity: 1;
+    z-index: 2;
+}
+.capaCentral {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 1280px;
+    height: 620px;
+    background: #89BF55 0% 0% no-repeat padding-box;
+    opacity: 0.7;
+    z-index: 5;
+}
