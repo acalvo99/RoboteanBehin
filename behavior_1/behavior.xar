@@ -1,0 +1,770 @@
+<?xml version="1.0" encoding="UTF-8" ?><ChoregrapheProject xmlns="http://www.aldebaran-robotics.com/schema/choregraphe/project.xsd" xar_version="3"><Box name="root" id="-1" localization="8" tooltip="Root box of Choregraphe&apos;s behavior. Highest level possible." x="0" y="0"><bitmap>media/images/box/root.png</bitmap><script language="4"><content><![CDATA[]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Input name="cambiarHTML" type="0" type_size="1" nature="4" stm_value_name="cambiarHTML" inner="1" tooltip="cambiarHTML desc" id="4" /><Input name="oirTexto" type="0" type_size="1" nature="4" stm_value_name="oirTexto" inner="1" tooltip="oirTexto desc" id="5" /><Input name="pedirDatosRanking" type="0" type_size="1" nature="4" stm_value_name="pedirDatosRanking" inner="1" tooltip="pedirDatosRanking desc" id="6" /><Input name="guardarInformacionPartida" type="0" type_size="1" nature="4" stm_value_name="guardarInformacionPartida" inner="1" tooltip="guardarInformacionPartida desc" id="7" /><Input name="reaccionRespuesta" type="0" type_size="1" nature="4" stm_value_name="reaccionRespuesta" inner="1" tooltip="reaccionRespuesta desc" id="8" /><Input name="respuestaResultado" type="0" type_size="1" nature="4" stm_value_name="respuestaResultado" inner="1" tooltip="respuestaResultado desc" id="9" /><Input name="empezarJuego" type="0" type_size="1" nature="4" stm_value_name="empezarJuego" inner="1" tooltip="empezarJuego desc" id="10" /><Input name="pedirDatosProgreso" type="0" type_size="1" nature="4" stm_value_name="pedirDatosProgreso" inner="1" tooltip="pedirDatosProgreso desc" id="11" /><Input name="obtenerEstadoEmocional" type="0" type_size="1" nature="4" stm_value_name="obtenerEstadoEmocional" inner="1" tooltip="obtenerEstadoEmocional desc" id="12" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="13" /><Timeline enable="0"><BehaviorLayer name="behavior_layer1"><BehaviorKeyframe name="keyframe1" index="1"><Diagram scale="70.7107"><Box name="Dialog" id="14" localization="8" tooltip="An example of multilanguage dialog implementation" x="858" y="0"><dialogFile>ExampleDialog/ExampleDialog.dlg</dialogFile><bitmap>media/images/box/box-dialog.png</bitmap><script language="4"><content><![CDATA[]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /><Output name="playAGame" type="1" type_size="1" nature="2" inner="0" tooltip="stimulated using $playAGame=1 in qiChat script when User wants to play a game&#x0A;" id="5" /><Resource name="Speech" type="Lock" timeout="0" /><Resource name="Speech recognition" type="Lock" timeout="0" /></Box><Box name="Set Language" id="15" localization="8" tooltip="Set the language of your robot for the current application. Your robot will speak and understand the selected language as long as your application has focus. Any following call to ALSpeechRecognition (Speech Reco. box for instance), ALTextToSpeech (Say box for instance) or ALDialog will use this language.&#x0A;" x="562" y="0"><bitmap>media/images/box/interaction/say.png</bitmap><script language="4"><content><![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+
+    def onLoad(self):
+        try:
+            self.tts = ALProxy("ALTextToSpeech")
+        except:
+            self.logger.warn("ALTextToSpeech is not available, language setting cannot be applied to speech")
+            self.tts = None
+
+        try:
+            self.asr = ALProxy("ALSpeechRecognition")
+        except:
+            self.logger.warn("ALSpeechRecognition is not available, language setting cannot be applied to recognition")
+            self.asr = None
+
+        try:
+            self.dialog = ALProxy("ALDialog")
+        except:
+            self.logger.warn("ALDialog is not available, language setting cannot be applied to dialog")
+            self.dialog = None
+
+    def onInput_onSet(self):
+        lang = self.getParameter("Language")
+        try:
+            if self.asr:
+                self.asr.setLanguage( self.getParameter("Language") )
+            if self.tts:
+                self.tts.setLanguage( self.getParameter("Language") )
+            if self.dialog:
+                self.dialog.setLanguage( self.getParameter("Language") )
+            if self.tts is None and self.asr is None and self.dialog is None:
+                raise RuntimeError("Cannot set language: neither ALTextToSpeech nor ALSpeechRecognition nor ALDialog is available.")
+
+            self.tts.setParameter("speed", 90)
+            self.tts.setParameter("pitchShift", 1.0)
+            self.onReady()
+            self.cambiarHTML("preguntas")
+        except:
+            error = "Language " + lang + " cannot be set."
+            self.logger.warn(error)
+            self.onError(error)]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onSet" type="1" type_size="1" nature="1" inner="0" tooltip="The data is set when a signal is received on this input." id="2" /><Output name="onReady" type="1" type_size="1" nature="2" inner="0" tooltip="Signal sent when the data has been set." id="3" /><Output name="onError" type="3" type_size="1" nature="2" inner="0" tooltip="Error output:&#x0A;- triggered if the language asked cannot be set" id="4" /><Output name="cambiarHTML" type="3" type_size="1" nature="2" inner="0" tooltip="" id="5" /><Parameter name="Language" inherits_from_parent="0" content_type="3" value="Spanish" default_value="English" custom_choice="1" tooltip="Set the language the robot speaks and understands." id="6"><Choice value="Arabic" /><Choice value="Brazilian" /><Choice value="Chinese" /><Choice value="Czech" /><Choice value="Danish" /><Choice value="Dutch" /><Choice value="English" /><Choice value="Finnish" /><Choice value="French" /><Choice value="German" /><Choice value="Greek" /><Choice value="Italian" /><Choice value="Japanese" /><Choice value="Korean" /><Choice value="MandarinTaiwan" /><Choice value="Norwegian" /><Choice value="Polish" /><Choice value="Portuguese" /><Choice value="Russian" /><Choice value="Spanish" /><Choice value="Swedish" /><Choice value="Turkish" /></Parameter><Resource name="Speech" type="Lock" timeout="0" /></Box><Box name="Event toTablet" id="16" localization="8" tooltip="Stores in NAOqi&apos;s shared memory the given value at the given key, and spreads the event to all its subscribers." x="301" y="85"><bitmap>media/images/box/sensors/STM.png</bitmap><script language="4"><content><![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+        pass
+
+    def onLoad(self):
+        self.memory = ALProxy("ALMemory")
+
+    def onUnload(self):
+        self.memory = None
+
+    def onInput_onStart(self, p):
+        self.memory.raiseEvent(self.getParameter("key"), p)
+        self.onStopped(p)
+
+    def onInput_onStop(self):
+        self.onUnload() #~ it is recommended to call onUnload of this box in a onStop method, as the code written in onUnload is used to stop the box as well
+        pass]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="0" type_size="1" nature="2" inner="0" tooltip="Receives the value to be inserted as an event in ALMemory." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="0" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished. It contains the inserted value in ALMemory." id="4" /><Output name="onError" type="3" type_size="1" nature="1" inner="0" tooltip="Output when error is raised by the behavior. Contains the error message." id="5" /><Parameter name="key" inherits_from_parent="0" content_type="3" value="toTablet" default_value="MyApplication/MyData" custom_choice="0" tooltip="" id="6" /></Box><Box name="Cambiar Volumen" id="23" localization="8" tooltip="This box contains a basic python script and can be used to create any python script box you would like.&#x0A;&#x0A;To edit its script, double-click on it." x="1034" y="149"><bitmap>media/images/box/box-python-script.png</bitmap><script language="4"><content><![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        self.audio_device_service = self.session().service("ALAudioDevice")
+        self.memory = self.session().service("ALMemory")
+        pass
+
+    def onUnload(self):
+        #put clean-up code here
+        pass
+
+    def onInput_onStart(self, val):
+        volumen = int(val)
+        self.memory.raiseEvent("volumen", volumen)
+        self.audio_device_service.setOutputVolume(volumen)
+        self.logger.info("Volumen: " + str(volumen))
+        self.onStopped()
+        pass
+
+    def onInput_onStop(self):
+        self.onUnload() #it is recommended to reuse the clean-up as the box is stopped
+        self.onStopped() #activate the output of the box]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="2" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /></Box><Box name="Volumen" id="25" localization="8" tooltip="Send the number you entered when the input is stimulated." plugin="numberedit_plugin" x="858" y="126"><bitmap>media/images/box/interaction/vocabulary.png</bitmap><script language="4"><content><![CDATA[# /!\ Generated content. Do not edit!
+class MyClass(GeneratedClass):
+	def __init__(self):
+		GeneratedClass.__init__(self)
+
+	def onInput_onStart(self):
+		self.onStopped(28)]]></content></script><pluginContent><number>28</number></pluginContent><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="1" inner="0" tooltip="To send the number on the output." id="2" /><Output name="onStopped" type="2" type_size="1" nature="2" inner="0" tooltip="The number you entered." id="3" /></Box><Box name="guardar-partida" id="37" localization="8" tooltip="This box contains a basic python script and can be used to create any python script box you would like.&#x0A;&#x0A;To edit its script, double-click on it." x="676" y="139"><bitmap>media/images/box/box-python-script.png</bitmap><script language="4"><content><![CDATA[import time
+from datetime import datetime
+class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+        self.activitiesPath = '/home/nao/.local/share/PackageManager/apps/roboteanbehin-17264a/html/users/activities.xml'
+    def onLoad(self):
+        #put initialization code here
+        pass
+
+    def onUnload(self):
+        #put clean-up code here
+        pass
+
+    def onInput_onStart(self, partida):
+#        if not os.path.exists(filepath):
+#            self.createDatabaseFile(filename)
+
+        tree = ET.parse(self.activitiesPath)
+        root = tree.getroot()
+        # Add activity
+        item = ET.Element('activity')
+
+        # Add user child nodes (subelements)
+        actID = ET.SubElement(item, 'activityID')
+        activityName = ET.SubElement(item, 'activityname')
+        userID = ET.SubElement(item, 'userID')
+        date = ET.SubElement(item, 'date')
+        correctAnswer = ET.SubElement(item, 'correctanswer')
+        duration = ET.SubElement(item, 'duration')
+        score = ET.SubElement(item, 'score')
+
+        # Add subelements values
+        actID.text = str(partida[0])
+        activityName.text = partida[1]
+        userID.text = str(partida[2])
+        date.text = datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d %H:%M:%S")
+        correctAnswer.text = str(partida[3])
+        duration.text = str(partida[4])
+        score.text = str(partida[5])
+
+        root.append(item)
+
+        with open(self.activitiesPath, 'rb+') as f:
+            f.write(ET.tostring(root))
+
+        self.onStopped() #activate the output of the box
+        pass
+
+#    def createDatabaseFile(self, filename):
+#        with open("activities.xml", 'a+') as f:
+#            f.write('<data></data>')
+
+    def onInput_onStop(self):
+        self.onUnload() #it is recommended to reuse the clean-up as the box is stopped
+        self.onStopped() #activate the output of the box]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="0" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /></Box><Box name="Show Emotion" id="38" localization="8" tooltip="This box contains a basic python script and can be used to create any python script box you would like.&#x0A;&#x0A;To edit its script, double-click on it." x="903" y="474"><bitmap>media/images/box/box-python-script.png</bitmap><script language="4"><content><![CDATA[import re
+import os
+import math
+import types
+
+sys.path.append("/home/nao/.local/share/PackageManager/apps/roboteanbehin-17264a/lib/")
+from animations import BodyTalk
+
+class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+        self.activities_path = '/home/nao/.local/share/PackageManager/apps/roboteanbehin-17264a/html/users/activities.xml'
+
+        self.audio_path = '/home/nao/.local/share/PackageManager/apps/roboteanbehin-17264a/audio/'
+
+        # Para ejecutar el movimiento es necesario usar AlMotion de naoqi
+        self.motion = self.session().service("ALMotion")
+        # Utilizar ALTextToSpeech para convertir el texto a voz
+        self.tts = self.session().service("ALTextToSpeech")
+        # Utilizar ALAudioPlayer para reproducir audio
+        self.audio_player = self.session().service("ALAudioPlayer")
+        # Utilizar ALRobotPosture para volver a una postura después de haber ejecutado un movimiento
+        self.posture_service = self.session().service("ALRobotPosture")
+        # Crear la clase Speaking
+        self.speaking = BodyTalk.Speaking()
+        # Elegir animaciones de Animation Library para mostrar movimientos al hablar
+        self.body_talk = self.getMethods(BodyTalk.Speaking)
+
+        self.MAX_head = -0.52    #angulo maximo cabeza -30.0º
+        self.MIN_head = 0.4451     #angulo minimo cabeza 25.5º
+
+        self.MAX_hip = 0.16        #angulo maximo cintura
+        self.MIN_hip = -0.4451     #angulo minimo cintura
+
+        self.MAX_pitch = 120
+        self.MIN_pitch = 75
+
+        self.MAX_speed = 100
+        self.MIN_speed = 80
+
+        self.k = 2.0               #gain
+
+        self.valences = []
+
+    def getMethods(self, cls):
+        return [x for x, y in cls.__dict__.items() if type(y) == types.FunctionType and not x.startswith('_')]
+
+    def getMotionDuration(self, motion):
+        motion_method = getattr(self.speaking, str(motion))
+        names, keys, times = motion_method()
+        duration = max([sublist[-1] for sublist in times])
+        #self.logger.info("MAX TIME animation: %s", str(duration))
+        return duration
+
+    def onLoad(self):
+
+        pass
+
+    def onUnload(self):
+        #put clean-up code here
+        pass
+
+    def sigmoid(self, MAX_val, MIN_val, k, valence):
+        f = ((MAX_val - MIN_val)/(1 + math.exp(-k * valence)))+ MIN_val
+        return f
+
+
+    def onInput_onStart(self, resultado):
+
+        #text = resultado[0]
+        #valence = resultado[1]
+
+        text = "Tu puntuación ha empeorado mucho respecto a tus anteriores partidas. ¡Muy mal! Tendrás que hacerlo mejor la próxima vez..."
+        valence = resultado
+
+        # Añadir los movimientos de BodyTalk a una lista
+        movements = self.body_talk[:]
+
+        # Crear el fichero de audio que el robot va a decir
+        self.tts.sayToFile(str(text), self.audio_path + "say_text.wav")
+        # Cargar el audio
+        audio_id = self.audio_player.loadFile(self.audio_path + "say_text.wav")
+        # Obtener la duración del audio
+        audio_length = self.audio_player.getFileLength(audio_id)
+        #self.logger.info("Audio puntuacion duration %s", str(audio_length))
+
+        # Secuencia de movimientos aleatorios para acompañar a la frase
+        animationtime = 0
+        selected_movements = []
+        while animationtime<audio_length and len(movements)>0:
+            animation = random.choice(movements)
+            motion_duration = self.getMotionDuration(animation)
+            if animationtime+motion_duration<=audio_length:
+                selected_movements.append(animation)
+                movements.remove(animation)
+                animationtime = animationtime + motion_duration
+            else:
+                movements.remove(animation)
+
+        #self.logger.info("Animation time %s", str(animationtime))
+
+        # Ejecutar los movimiento utilizando ALMotion angleInterpolation
+        for animation in selected_movements:
+            duration = self.getMotionDuration(animation)
+            motion_method = getattr(self.speaking, str(animation))
+            names, keys, times = motion_method()
+            #self.logger.info("names: %s", str(names))
+            #self.logger.info("keys: %s", str(keys))
+            #self.logger.info("times: %s", str(times))
+
+            # Segun el valor de valence cambiar la posición de la cabeza y de la cintura
+            # 1) Obtener los angulos de la cabeza y cintura de la posición actual
+            names_head = ["HeadPitch"]
+            names_hip = ["HipPitch"]
+            sensorAngles_head = self.motion.getAngles(names_head, True)
+            sensorAngles_hip = self.motion.getAngles(names_hip, True)
+
+            # 2) Modificar esas posiciones segun el Valence
+            f_head = self.sigmoid(self.MAX_head, self.MIN_head, self.k, valence)
+            f_hip = self.sigmoid(self.MAX_hip, self.MIN_hip, self.k, valence)
+            f_speed = self.sigmoid(self.MAX_speed, self.MIN_speed, self.k, valence)
+            f_pitch = self.sigmoid(self.MAX_pitch, self.MIN_pitch, self.k, valence)
+
+            #self.logger.info("head: %f", f_head)
+            #self.logger.info("hip: %f", f_hip)
+
+            names.append("HeadPitch")
+            keys.append([f_head])
+            times.append([duration])
+
+
+            names.append("HipPitch")
+            keys.append([f_hip])
+            times.append([duration])
+
+            #self.logger.info("names %s", str(names))
+            #self.logger.info("keys %s", str(keys))
+            #self.logger.info("times %s", str(times))
+            self.motion.angleInterpolation(names, keys, times, True, _async=True)
+
+        # Decir texto
+        self.tts.setParameter("speed", f_speed)
+        self.tts.setParameter("pitchShift", 1.0)
+        pitch_text = "\\vct=X\\"
+        pitch_text = pitch_text.replace("X", str(int(f_pitch)))
+        #print "Text: ", pitch_text
+        self.tts.say(pitch_text + str(text))
+        #self.tts.say(text)
+
+        # Volver a la postura inicial del robot
+        self.posture_service.goToPosture("StandInit", 0.5)
+
+        self.onStopped() #activate the output of the box
+        #pass
+
+    def onInput_onStop(self):
+        self.onUnload() #it is recommended to reuse the clean-up as the box is stopped
+        self.onStopped() #activate the output of the box]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="0" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /></Box><Box name="Cambiar HTML" id="18" localization="8" tooltip="Shows the webview (html content) on the tablet.&#x0A;&#x0A;V1.0.0&#x0A;" x="1156" y="69"><bitmap>media/images/box/internet/internet.png</bitmap><script language="4"><content><![CDATA[class MyClass(GeneratedClass):
+
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def _getTabletService(self):
+        tabletService = None
+        try:
+            tabletService = self.session().service("ALTabletService")
+        except Exception as e:
+            self.logger.error(e)
+        return tabletService
+
+    def _getAbsoluteUrl(self, partial_url):
+        import os
+        subPath = os.path.join(self.packageUid(), os.path.normpath(partial_url).lstrip("\\/"))
+        # We create TabletService here in order to avoid
+        # problems with connections and disconnections of the tablet during the life of the application
+        return "http://%s/apps/%s" %(self._getTabletService().robotIp(), subPath.replace(os.path.sep, "/"))
+
+    def onInput_onStart(self, page):
+         # We create TabletService here in order to avoid
+        # problems with connections and disconnections of the tablet during the life of the application
+        tabletService = self._getTabletService()
+        if tabletService:
+            try:
+                url = page + ".html"
+                if url == '':
+                    self.logger.error("URL of the image is empty")
+                if not url.startswith('http'):
+                    url = self._getAbsoluteUrl(url)
+                self.logger.info(url)
+                tabletService.showWebview(url)
+            except Exception as err:
+                self.logger.error("Error during ShowImage : %s " % err)
+                self.onStopped()
+        self.onStopped()]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="3" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="3" /></Box><Box name="Select Reaction" id="3" localization="8" tooltip="Este módulo hace que el robot ejecute una animación predefinida de acuerdo al valor de la respuesta a una pregunta del juego" x="432" y="576"><bitmap>media/images/box/box-python-script.png</bitmap><script language="4"><content><![CDATA[import random
+
+class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+        # Utilizar AnimationPlaye de naoqi para ejecutar animaciones predefinidas
+        self.animation_player_service = self.session().service("ALAnimationPlayer")
+        # Utilizar ALRobotPosture para volver a una postura después de haber ejecutado un movimiento
+        self.posture_service = self.session().service("ALRobotPosture")
+
+        # Elegir animaciones de Animation Library para mostrar reacciones positivas y negativas
+        self.emotion_neg_1 = "animations/Stand/Emotions/Negative/Disappointed_1"
+        self.emotion_neg_2 = "animations/Stand/Emotions/Negative/Exhausted_1"
+        self.emotion_neg_3 = "animations/Stand/Emotions/Negative/Frustrated_1"
+        self.emotion_neg_4 = "animations/Stand/Emotions/Negative/Hurt_1"
+        self.emotion_neg_5 = "animations/Stand/Emotions/Negative/Angry_3"
+        self.emotion_neg_6 = "animations/Stand/Emotions/Negative/Bored_1"
+
+        self.negative_reaction = [self.emotion_neg_1, self.emotion_neg_2, self.emotion_neg_3, self.emotion_neg_4, self.emotion_neg_5, self.emotion_neg_6]
+
+        self.emotion_pos_1 = "animations/Stand/Emotions/Positive/Excited_1"
+        self.emotion_pos_2 = "animations/Stand/Emotions/Positive/Interested_2"
+        self.emotion_pos_3 = "animations/Stand/Emotions/Positive/Happy_1"
+        self.emotion_pos_4 = "animations/Stand/Emotions/Positive/Happy_4"
+        self.emotion_pos_5 = "animations/Stand/Emotions/Positive/Optimistic_1"
+        self.emotion_pos_6 = "animations/Stand/Emotions/Positive/Sure_1"
+        self.emotion_pos_7 = "animations/Stand/Emotions/Positive/Confident_1"
+
+        self.positive_reaction = [self.emotion_pos_1, self.emotion_pos_2, self.emotion_pos_3, self.emotion_pos_4, self.emotion_pos_5, self.emotion_pos_6, self.emotion_pos_7]
+
+
+    def onLoad(self):
+        #put initialization code here
+        pass
+
+    def onUnload(self):
+        #put clean-up code here
+        pass
+
+    def onInput_onStart(self, answer):
+        # Dependiendo del valor de answer seleccionar una animación de la lista correspondiente de forma random
+        if(answer==0):
+            animation=random.choice(self.negative_reaction)
+        else:
+            animation=random.choice(self.positive_reaction)
+
+
+        # Ejecutar la animación con AnimationPlayer
+        self.animation_player_service.run(animation)
+
+        # Volver a la postura inicial del robot
+        self.posture_service.goToPosture("StandInit", 0.5)
+
+        self.onStopped() #activate the output of the box
+
+    def onInput_onStop(self):
+        self.onUnload() #it is recommended to reuse the clean-up as the box is stopped
+        self.onStopped() #activate the output of the box]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="2" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /></Box><Box name="Get Emotional State" id="5" localization="8" tooltip="Este módulo es el que se encarga de definir cual es el estado emocional del robot de acuerdo a las actividades realizadas." x="434" y="688"><bitmap>media/images/box/box-python-script.png</bitmap><script language="4"><content><![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+        self.valencesFilename = '/home/nao/.local/share/PackageManager/apps/roboteanbehin-17264a/html/users/valences.xml'
+        self.memory = self.session().service("ALMemory")
+
+        self.valence = 0.0
+
+    def onLoad(self):
+        #put initialization code here
+        pass
+
+    def onUnload(self):
+        #put clean-up code here
+        pass
+
+    def onInput_onStart(self, user):
+        # Obtener Estado emocional del fichero
+
+        userID = str(user)
+        tree = ET.parse(self.valencesFilename)
+        root = tree.getroot()
+        for activity in root.findall('emotional_state'):
+            item = []
+            name = activity.find('userID').text
+            if name == userID:
+                self.valence = float(activity.find('valence').text)
+                break
+
+        self.memory.raiseEvent("datosEstadoEmocional", self.valence)
+        self.logger.info("GET EMOTIONAL STATE: %s", str(self.valence))
+        self.onStopped() #activate the output of the box
+        #pass
+
+    def onInput_onStop(self):
+        self.onUnload() #it is recommended to reuse the clean-up as the box is stopped
+        self.onStopped() #activate the output of the box]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="0" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /></Box><Box name="Text Valence" id="4" localization="8" tooltip="Este módulo se encarga de adaptar el comportamiento del robot de acuerdo al estado emocional del robot" x="685" y="410"><bitmap>media/images/box/box-python-script.png</bitmap><script language="4"><content><![CDATA[import re
+import os
+import math
+
+sys.path.append("/home/nao/.local/share/PackageManager/apps/roboteanbehin-17264a/lib/")
+from animations import BodyTalk
+
+class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+        self.activities_path = '/home/nao/.local/share/PackageManager/apps/roboteanbehin-17264a/html/users/activities.xml'
+
+        self.audio_path = '/home/nao/.local/share/PackageManager/apps/roboteanbehin-17264a/audio/'
+
+        self.valences = []
+
+
+
+    def onLoad(self):
+
+        pass
+
+    def onUnload(self):
+        #put clean-up code here
+        pass
+
+
+    def onInput_onValences(self, valences):
+        self.valences = valences
+        self.logger.info("Valences: %s", str(valences))
+
+    def onInput_onStart(self):
+
+        Vold = self.valences[0]
+        valence = self.valences[1]
+
+
+        if Vold < valence:
+            if (valence-Vold) < 0.2:
+                text = 'Has mejorado un poquito tu puntuación respecto a tus últimas partidas. ¡Sigue así!'
+            else:
+                text = 'Has mejorado tu puntuación respecto a tus últimas partidas. ¡Muy bien! ¡Sigue así!'
+        else:
+            if (Vold-valence) < 0.2:
+                text = 'Tu puntuación ha empeorado un poquito respecto a tus anteriores partidas. Puedes hacerlo mejor la próxima vez...'
+            else:
+                text = 'Tu puntuación ha empeorado mucho respecto a tus anteriores partidas. ¡Muy mal! Tendrás que hacerlo mejor la próxima vez...'
+
+
+        resultado = [text, valence]
+
+        self.onStopped(resultado) #activate the output of the box
+        #pass
+
+    def onInput_onStop(self):
+        self.onUnload() #it is recommended to reuse the clean-up as the box is stopped
+        self.onStopped() #activate the output of the box]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="0" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Input name="onValences" type="0" type_size="1" nature="1" inner="0" tooltip="" id="4" /><Output name="onStopped" type="0" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="5" /></Box><Box name="Game Introduction" id="2" localization="8" tooltip="Say some text with animations. The text can be localized." x="1325" y="70"><bitmap>media/images/box/interaction/say.png</bitmap><script language="4"><content><![CDATA[import time
+
+class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+        self.tts = ALProxy('ALAnimatedSpeech')
+        self.ttsStop = ALProxy('ALAnimatedSpeech', True) #Create another proxy as wait is blocking if audioout is remote
+        # Utilizar ALRobotPosture para volver a una postura después de haber ejecutado un movimiento
+        self.posture_service = self.session().service("ALRobotPosture")
+
+    def onLoad(self):
+        self.bIsRunning = False
+        self.ids = []
+
+    def onUnload(self):
+        for id in self.ids:
+            try:
+                self.ttsStop.stop(id)
+            except:
+                pass
+        while( self.bIsRunning ):
+            time.sleep( 0.2 )
+
+    def onInput_onStart(self):
+        self.bIsRunning = True
+        try:
+            movement = self.getParameter("Speaking movement mode")
+            textParam = self.getParameter("Text")
+            if movement == "disabled":
+                textParam = "^start({0}) {1} ^wait({0})".format(self.getParameter("Animation"), textParam)
+            sentence = "\RSPD="+ str( self.getParameter("Speed (%)") ) + "\ "
+            sentence += "\VCT="+ str( self.getParameter("Voice shaping (%)") ) + "\ "
+            sentence += textParam
+            sentence +=  "\RST\ "
+            id = self.tts.post.say(str(sentence), {"speakingMovementMode":movement})
+            self.ids.append(id)
+            self.tts.wait(id, 0)
+        finally:
+            try:
+                self.ids.remove(id)
+            except:
+                pass
+            if( self.ids == [] ):
+                self.onStopped() # activate output of the box
+                self.bIsRunning = False
+
+        # Volver a la postura inicial del robot
+        self.posture_service.goToPosture("StandInit", 0.8)
+
+    def onInput_onStop(self):
+        self.onUnload()]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this Input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this Input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when Box behavior is finished." id="4" /><Parameter name="Voice shaping (%)" inherits_from_parent="1" content_type="1" value="100" default_value="100" min="50" max="150" tooltip='Used to modify at runtime the voice feature (tone, speed). In a slighty&#x0A;different way than pitch and speed, it gives a kind of &quot;gender or age&#x0A;modification&quot; effect.&#x0A;&#x0A;For instance, a quite good male derivation of female voice can be&#x0A;obtained setting this parameter to 78%.&#x0A;&#x0A;Note: For a better effect, you can compensate this parameter with the&#x0A;speed parameter. For example, if you want to decrease by 20% the voice&#x0A;shaping, you will have to increase by 20% the speed to keep a constant&#x0A;average speed.' id="5" /><Parameter name="Speed (%)" inherits_from_parent="1" content_type="1" value="100" default_value="100" min="50" max="200" tooltip="Changes the speed of the voice.&#x0A;&#x0A;Note: For a better effect, you can compensate this parameter with the voice&#x0A;shaping parameter. For example, if you want to increase by 20% the speed, you&#x0A;will have to decrease by 20% the voice shaping to keep a constant average&#x0A;speed." id="6" /><Parameter name="Text" inherits_from_parent="0" content_type="5" value="Desempolva todo tu conocimiento y contesta a estas preguntas de diferentes temas en el menor tiempo posible. Estoy listo para empezar, pulsa comenzar juego." default_value="" tooltip="The text you want to say. Don&apos;t forget to translate it!" id="7" /><Parameter name="Speaking movement mode" inherits_from_parent="0" content_type="3" value="random" default_value="contextual" custom_choice="0" tooltip="Change the body language mode during the speech.&#x0A;disabled: The robot will only play the animations given by the user through the animation parameter.&#x0A;random: During time the robot has no animation to play, he will launch random neutral animations.&#x0A;contextual: During time the robot has no animation to play, he will try to launch a new one accordingly to the saying text. Every time the robot can&apos;t find a contextual animation he will launch a random neutral animation." id="8"><Choice value="disabled" /><Choice value="random" /><Choice value="contextual" /></Parameter><Parameter name="Animation" inherits_from_parent="0" content_type="3" value="Stand/Gestures/Hey_2" default_value="" custom_choice="0" tooltip="The animation to play" id="9" /></Box><Box name="Game Rules" id="6" localization="8" tooltip="Say some text with animations. The text can be localized." x="809" y="211"><bitmap>media/images/box/interaction/say.png</bitmap><script language="4"><content><![CDATA[import time
+
+class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+        self.tts = ALProxy('ALAnimatedSpeech')
+        self.ttsStop = ALProxy('ALAnimatedSpeech', True) #Create another proxy as wait is blocking if audioout is remote
+        # Utilizar ALRobotPosture para volver a una postura después de haber ejecutado un movimiento
+        self.posture_service = self.session().service("ALRobotPosture")
+
+    def onLoad(self):
+        self.bIsRunning = False
+        self.ids = []
+
+    def onUnload(self):
+        for id in self.ids:
+            try:
+                self.ttsStop.stop(id)
+            except:
+                pass
+        while( self.bIsRunning ):
+            time.sleep( 0.2 )
+
+    def onInput_onStart(self):
+        self.bIsRunning = True
+        try:
+            movement = self.getParameter("Speaking movement mode")
+            textParam = self.getParameter("Text")
+            if movement == "disabled":
+                textParam = "^start({0}) {1} ^wait({0})".format(self.getParameter("Animation"), textParam)
+            sentence = "\RSPD="+ str( self.getParameter("Speed (%)") ) + "\ "
+            sentence += "\VCT="+ str( self.getParameter("Voice shaping (%)") ) + "\ "
+            sentence += textParam
+            sentence +=  "\RST\ "
+            id = self.tts.post.say(str(sentence), {"speakingMovementMode":movement})
+            self.ids.append(id)
+            self.tts.wait(id, 0)
+        finally:
+            try:
+                self.ids.remove(id)
+            except:
+                pass
+            if( self.ids == [] ):
+                self.onStopped() # activate output of the box
+                self.bIsRunning = False
+
+        # Volver a la postura inicial del robot
+        self.posture_service.goToPosture("StandInit", 0.8)
+
+    def onInput_onStop(self):
+        self.onUnload()]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this Input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this Input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when Box behavior is finished." id="4" /><Parameter name="Voice shaping (%)" inherits_from_parent="1" content_type="1" value="100" default_value="100" min="50" max="150" tooltip='Used to modify at runtime the voice feature (tone, speed). In a slighty&#x0A;different way than pitch and speed, it gives a kind of &quot;gender or age&#x0A;modification&quot; effect.&#x0A;&#x0A;For instance, a quite good male derivation of female voice can be&#x0A;obtained setting this parameter to 78%.&#x0A;&#x0A;Note: For a better effect, you can compensate this parameter with the&#x0A;speed parameter. For example, if you want to decrease by 20% the voice&#x0A;shaping, you will have to increase by 20% the speed to keep a constant&#x0A;average speed.' id="5" /><Parameter name="Speed (%)" inherits_from_parent="1" content_type="1" value="100" default_value="100" min="50" max="200" tooltip="Changes the speed of the voice.&#x0A;&#x0A;Note: For a better effect, you can compensate this parameter with the voice&#x0A;shaping parameter. For example, if you want to increase by 20% the speed, you&#x0A;will have to decrease by 20% the voice shaping to keep a constant average&#x0A;speed." id="6" /><Parameter name="Text" inherits_from_parent="0" content_type="5" value="Las reglas del juego son las siguientes: Tendrás solo 30 segundos para cada pregunta. Una vez que selecciones tu respuesta, no se puede deshacer. No puedes seleccionar ninguna opción una vez que pasa el tiempo. No puedes salir de la prueba mientras juegas. Y obtendrás puntos en base a tus respuestas correctas y el tiempo que tardes en contestarlas. Cuando estés listo para empezar con el juego pulsa continuar." default_value="" tooltip="The text you want to say. Don&apos;t forget to translate it!" id="7" /><Parameter name="Speaking movement mode" inherits_from_parent="0" content_type="3" value="random" default_value="contextual" custom_choice="0" tooltip="Change the body language mode during the speech.&#x0A;disabled: The robot will only play the animations given by the user through the animation parameter.&#x0A;random: During time the robot has no animation to play, he will launch random neutral animations.&#x0A;contextual: During time the robot has no animation to play, he will try to launch a new one accordingly to the saying text. Every time the robot can&apos;t find a contextual animation he will launch a random neutral animation." id="8"><Choice value="disabled" /><Choice value="random" /><Choice value="contextual" /></Parameter><Parameter name="Animation" inherits_from_parent="0" content_type="3" value="Stand/Gestures/Hey_2" default_value="" custom_choice="0" tooltip="The animation to play" id="9" /></Box><Box name="Pedir Datos Progreso" id="7" localization="8" tooltip="This box contains a basic python script and can be used to create any python script box you would like.&#x0A;&#x0A;To edit its script, double-click on it." x="460" y="299"><bitmap>media/images/box/box-python-script.png</bitmap><script language="4"><content><![CDATA[import xml.etree.ElementTree as ET
+import os
+
+class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+        self.activitiesPath = '/home/nao/.local/share/PackageManager/apps/roboteanbehin-17264a/html/users/activities.xml'
+        self.memory = self.session().service("ALMemory")
+        self.progress_list = []
+
+    def onLoad(self):
+        #put initialization code here
+        pass
+
+    def onUnload(self):
+        #put clean-up code here
+        pass
+
+    def onInput_onStart(self, user_name):
+
+        tree = ET.parse(self.activitiesPath)
+        root = tree.getroot()
+#        try:
+        self.progress_list = []
+        for activity in root.findall('activity'):
+            item = []
+            activity_id = activity.find('activityID').text
+            #self.logger.info("activity_id: %s", str(activity_id))
+            if activity_id == '4':
+                name = activity.find('userID').text
+                if name == user_name:
+                    date = activity.find('date').text
+                    correctanswer = activity.find('correctanswer').text
+                    duration = activity.find('duration').text
+                    score = activity.find('score').text
+                    item.append(date)
+                    item.append(correctanswer)
+                    item.append(duration)
+                    item.append(score)
+                    self.progress_list.append(item)
+
+
+        self.memory.raiseEvent("datosProgreso", self.progress_list)
+#            self.memory.raiseEvent("datosRanking", self.ranking_list)
+#        except:
+#            self.logger.info("ERRORRRRRR")
+#            self.memory.raiseEvent("datosRanking", ["None", "None"])
+
+        progreso = [self.progress_list, user_name]
+        self.onStopped()
+        pass
+
+    def onInput_onStop(self):
+        self.onUnload() #it is recommended to reuse the clean-up as the box is stopped
+        self.onStopped() #activate the output of the box]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="3" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /></Box><Box name="Save Valence" id="9" localization="8" tooltip="" x="456" y="183"><bitmap>media/images/box/box-python-script.png</bitmap><script language="4"><content><![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+        self.valencesFilename = '/home/nao/.local/share/PackageManager/apps/roboteanbehin-17264a/html/users/valences.xml'
+        self.memory = self.session().service("ALMemory")
+
+        self.alpha = 0.3
+        self.Vold = 0.0
+
+    def onLoad(self):
+        #put initialization code here
+        pass
+
+    def onUnload(self):
+        #put clean-up code here
+        pass
+
+    def rangeConversion(self, first_old, last_old, first_new, last_new, old_value):
+        old_range = (last_old - first_old)
+        #rospy.loginfo("old_range: %f", old_range)
+        new_range = (last_new - first_new)
+        #rospy.loginfo("new_range: %f", new_range)
+        new_value = (((old_value - first_old) * new_range) / old_range) + first_new
+        #rospy.loginfo("(((%f - %f) * %f) / %f) + %f", old_value, first_new, new_range, old_range, first_new)
+        #rospy.loginfo("new_value: %f", new_value)
+        return new_value
+
+    def onInput_onStart(self, partida):
+
+        userID = str(partida[2])
+        score = float(partida[5])
+        # Coger el valence de la anterior partida
+        tree = ET.parse(self.valencesFilename)
+        root = tree.getroot()
+        for activity in root.findall('emotional_state'):
+            name = activity.find('userID').text
+            if name == userID:
+                self.Vold = float(activity.find('valence').text)
+
+        # Calcular el Valence
+        valence = self.Vold
+        self.logger.info("Vold: %s", str(valence))
+
+        Vactual = self.rangeConversion(0.0, 100.0, -1.0, 1.0, float(score))
+        self.logger.info("Vactual: %s", str(Vactual))
+
+        valence = self.alpha * valence + (1-self.alpha) * Vactual
+        self.logger.info("Valence: %s", str(valence))
+
+        valences = [self.Vold, valence]
+
+
+
+        # Guardar valence en activitiesFilename
+        tree = ET.parse(self.valencesFilename)
+        root = tree.getroot()
+        kont = 0
+
+        for activity in root.findall('emotional_state'):
+            name = activity.find('userID').text
+            if name == userID:
+                activity.find('valence').text = str(valence)
+                kont += 1
+                break
+
+        if kont == 0:
+            # Add activity
+            item = ET.Element('emotional_state')
+
+            # Add user child nodes (subelements)
+            userID_label = ET.SubElement(item, 'userID')
+            valence_label = ET.SubElement(item, 'valence')
+
+            # Add subelements values
+            userID_label.text = str(userID)
+            valence_label.text = str(valence)
+
+            root.append(item)
+
+        with open(self.valencesFilename, 'rb+') as f:
+            f.write(ET.tostring(root))
+        self.onStopped(valences) #activate the output of the box
+        #pass
+
+    def onInput_onStop(self):
+        self.onUnload() #it is recommended to reuse the clean-up as the box is stopped
+        self.onStopped() #activate the output of the box]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="0" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="0" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /></Box><Box name="Convert Result " id="11" localization="8" tooltip="" x="689" y="533"><bitmap>media/images/box/box-python-script.png</bitmap><script language="4"><content><![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+        self.score = 0
+
+    def onLoad(self):
+        #put initialization code here
+        pass
+
+    def onUnload(self):
+        #put clean-up code here
+        pass
+
+
+    def rangeConversion(self, first_old, last_old, first_new, last_new, old_value):
+        old_range = (last_old - first_old)
+        #rospy.loginfo("old_range: %f", old_range)
+        new_range = (last_new - first_new)
+        #rospy.loginfo("new_range: %f", new_range)
+        new_value = (((old_value - first_old) * new_range) / old_range) + first_new
+        #rospy.loginfo("(((%f - %f) * %f) / %f) + %f", old_value, first_new, new_range, old_range, first_new)
+        #rospy.loginfo("new_value: %f", new_value)
+        return new_value
+
+    def onInput_onStart(self, resultado):
+        self.score = resultado[1]
+        resultado[1] = self.rangeConversion(0.0, 100.0, -1.0, 1.0, float(self.score))
+        self.onStopped(resultado) #activate the output of the box
+        #pass
+
+    def onInput_onStop(self):
+        self.onUnload() #it is recommended to reuse the clean-up as the box is stopped
+        self.onStopped(p) #activate the output of the box]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="0" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="0" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /></Box><Link inputowner="14" indexofinput="2" outputowner="15" indexofoutput="3" /><Link inputowner="16" indexofinput="2" outputowner="0" indexofoutput="5" /><Link inputowner="25" indexofinput="2" outputowner="15" indexofoutput="3" /><Link inputowner="23" indexofinput="2" outputowner="25" indexofoutput="3" /><Link inputowner="18" indexofinput="2" outputowner="15" indexofoutput="5" /><Link inputowner="37" indexofinput="2" outputowner="0" indexofoutput="7" /><Link inputowner="3" indexofinput="2" outputowner="0" indexofoutput="8" /><Link inputowner="18" indexofinput="2" outputowner="0" indexofoutput="4" /><Link inputowner="7" indexofinput="2" outputowner="0" indexofoutput="11" /><Link inputowner="9" indexofinput="2" outputowner="0" indexofoutput="7" /><Link inputowner="5" indexofinput="2" outputowner="0" indexofoutput="12" /><Link inputowner="4" indexofinput="4" outputowner="9" indexofoutput="4" /><Link inputowner="4" indexofinput="2" outputowner="7" indexofoutput="4" /><Link inputowner="11" indexofinput="2" outputowner="0" indexofoutput="9" /><Link inputowner="2" indexofinput="2" outputowner="18" indexofoutput="3" /><Link inputowner="6" indexofinput="2" outputowner="0" indexofoutput="10" /><Link inputowner="15" indexofinput="2" outputowner="0" indexofoutput="2" /><Link inputowner="38" indexofinput="2" outputowner="4" indexofoutput="5" /><Link inputowner="38" indexofinput="2" outputowner="11" indexofoutput="4" /></Diagram></BehaviorKeyframe></BehaviorLayer></Timeline></Box></ChoregrapheProject>
